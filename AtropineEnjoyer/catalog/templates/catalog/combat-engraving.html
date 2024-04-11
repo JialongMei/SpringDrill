@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Combat Engraving List</h1>
+  {% if combat_engraving_list %}
+    <ul>
+      {% for combat in combat_engraving_list %}
+      <li>
+        <a href="{{ combat.get_absolute_url }}">{{ combat.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no combat engravings in Trixion.</p>
+  {% endif %}
+{% endblock %}

@@ -35,14 +35,14 @@ class AllClass(models.Model):
             UniqueConstraint(
                 Lower('name'),
                 name='genre_name_case_insensitive_unique',
-                violation_error_message="Genre already exists (case insensitive match)"
+                violation_error_message="Class already exists (case insensitive match)"
             ),
         ]
 
 
 class CombatEngraving(models.Model):
     name = models.CharField(max_length=40, unique=True)
-    description = models.CharField(max_length=1000, unique=True)
+    description = models.TextField(max_length=1000, unique=True)
 
     class Meta:
         ordering = ['name']
@@ -56,7 +56,7 @@ class CombatEngraving(models.Model):
 
 class ClassEngraving(models.Model):
     name = models.CharField(max_length=40, unique=True)
-    description = models.CharField(max_length=1000, blank=True)
+    description = models.TextField(max_length=1000)
 
     class Meta:
         ordering = ['name']
