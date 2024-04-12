@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Class Engraving List</h1>
+  {% if class_engraving_list %}
+    <ul>
+      {% for class in class_engraving_list %}
+      <li>
+        <a href="{{ class.get_absolute_url }}">{{ class.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no class engravings in Trixion.</p>
+  {% endif %}
+{% endblock %}

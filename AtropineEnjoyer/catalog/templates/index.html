@@ -7,6 +7,17 @@
 </head>
 <body>
     <p style="text-align: center"><strong>Keep ZDPSing</strong></p>
+    {% if archetype_list %}
+    <ul>
+      {% for archetype in archetype_list %}
+      <li>
+        <a href="{{ archetype.get_absolute_url }}">{{ archetype.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no archetype in Trixion.</p>
+  {% endif %}
 </body>
 {% endblock %}
 

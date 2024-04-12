@@ -2,7 +2,9 @@ from django.urls import reverse
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
-
+import os
+from django.core.files import File
+from django.conf import settings
 
 class Archetype(models.Model):
     name = models.CharField(max_length=40, unique=True,help_text="Name of this archetype(e.g. Martial Artist)")
@@ -17,11 +19,25 @@ class Archetype(models.Model):
         return self.name
 
 
+class ClassEngraving(models.Model):
+    name = models.CharField(max_length=40, unique=True)
+    description = models.TextField(max_length=1000)
+    associated_class = models.ForeignKey('AllClass', on_delete=models.RESTRICT, null=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('class-engraving-detail', args=[str(self.id)])
+
+
+
 class AllClass(models.Model):
-    name = models.CharField(max_length=40, unique=True,help_text="Name of this class(e.g. Wardancer)")
+    name = models.CharField(max_length=40, unique=True, help_text="Name of this class(e.g. Wardancer)")
     archetype = models.ForeignKey('Archetype', on_delete=models.RESTRICT, null=True)
-    first_class_engraving = models.ForeignKey('ClassEngraving', on_delete=models.RESTRICT, null=True, related_name='first_eng')
-    second_class_engraving = models.ForeignKey('ClassEngraving', on_delete=models.RESTRICT, null=True, related_name='second_eng')
 
     def __str__(self):
         return self.name
@@ -54,15 +70,4 @@ class CombatEngraving(models.Model):
         return reverse('combat-engraving-detail', args=[str(self.id)])
 
 
-class ClassEngraving(models.Model):
-    name = models.CharField(max_length=40, unique=True)
-    description = models.TextField(max_length=1000)
 
-    class Meta:
-        ordering = ['name']
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('class-engraving-detail', args=[str(self.id)])

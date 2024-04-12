@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ archetype.name }}</h1>
+
+  <p>
+    {% for archetype in archetype.allclass_set.all %}
+    <br>
+    <br>
+      <span style="margin-left: 100px;"><a href="{% url 'class-detail' archetype.pk %}"> {{ archetype }}</a></span><br>
+    {% endfor %}
+  </p>
+
+{% endblock %}

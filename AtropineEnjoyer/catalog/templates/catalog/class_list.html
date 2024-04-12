@@ -7,7 +7,7 @@
       {% for class in class_list %}
       <li>
         <a href="{{ class.get_absolute_url }}">{{ class.name }}</a>
-        &emsp;|{{class.archetype}}|
+        &emsp;|{{class.archetype.name}}|
         &emsp;{{class.first_class_engraving}}&emsp;
         {{class.second_class_engraving}}
       </li>

@@ -1,10 +1,15 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>{{ class.name }}</h1>
+  <img src="{{class.icon}}"/><h1>{{ class.name }}</h1>
 
   <p><strong>Name:</strong> {{ class.name }}</p>
   <p><strong>Archetype:</strong> {{ class.archetype }}</p>
-  <p><strong>First Class Engraving:</strong> {{ class.first_class_engraving }}</p>
-  <p><strong>Second Class Engraving:</strong> {{ class.second_class_engraving }}</p>
+  <p><strong>Class Engraving:</strong>
+    <br>
+  {% for engraving in class.classengraving_set.all %}
+    <span style="margin-left: 126px;">
+    <a href="{% url 'class-engraving-detail' engraving.pk %}"> {{ engraving }}</a><br></span>
+  {% endfor %}
+  </p>
 {% endblock %}

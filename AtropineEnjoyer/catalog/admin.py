@@ -7,6 +7,3 @@ admin.site.register(Archetype)
 admin.site.register(AllClass)
 
 
-class AllClassInline(admin.TabularInline):
-    model =AllClass
-
