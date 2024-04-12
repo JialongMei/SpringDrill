@@ -38,6 +38,7 @@ class ClassEngraving(models.Model):
 class AllClass(models.Model):
     name = models.CharField(max_length=40, unique=True, help_text="Name of this class(e.g. Wardancer)")
     archetype = models.ForeignKey('Archetype', on_delete=models.RESTRICT, null=True)
+    icon = models.ImageField(upload_to='icons',default='media/default/default_icon.jpg')
 
     def __str__(self):
         return self.name

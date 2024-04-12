@@ -12,7 +12,4 @@ urlpatterns = [
     path('combat-engraving/<int:pk>', views.CombatEngravingDetailView.as_view(), name='combat-engraving-detail'),
     path('class-engraving/', views.ClassEngravingListView.as_view(), name='class-engraving'),
     path('class-engraving/<int:pk>', views.ClassEngravingDetailView.as_view(), name='class-engraving-detail'),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

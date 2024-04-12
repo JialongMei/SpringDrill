@@ -1,7 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <img src="{{class.icon}}"/><h1>{{ class.name }}</h1>
+  <img src="{{class.icon.url}}"/>
+  <h1>{{ class.name }}</h1>
 
   <p><strong>Name:</strong> {{ class.name }}</p>
   <p><strong>Archetype:</strong> {{ class.archetype }}</p>
