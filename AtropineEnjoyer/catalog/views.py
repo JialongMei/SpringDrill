@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import CombatEngraving, ClassEngraving, AllClass, Archetype
 from django.views import generic
 from django.shortcuts import HttpResponse, Http404
-
+from .recolor import recolor
 
 # def index(request):
 #     return render(request, 'index.html')

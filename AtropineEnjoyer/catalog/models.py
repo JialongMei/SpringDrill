@@ -1,10 +1,20 @@
+from django.dispatch import receiver
 from django.urls import reverse
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
-import os
-from django.core.files import File
-from django.conf import settings
+from django.db.models.signals import post_save
+from PIL import Image
+
+
+@receiver(post_save, sender=Image)
+def crop_image(sender, instance, **kwargs):
+    imgage = instance.image
+    original = Image.open(imgage.src.path).convert("RGBA")
+    new_image = Image.new("RGBA", original.size, "BLACK")
+    new_image.paste(original, mask=original)
+    instance.image = new_image
+
 
 class Archetype(models.Model):
     name = models.CharField(max_length=40, unique=True,help_text="Name of this archetype(e.g. Martial Artist)")
