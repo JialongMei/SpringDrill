@@ -3,11 +3,12 @@ from django.urls import reverse
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
-from PIL import Image
+from django.conf import settings
 
 class Character(models.Model):
     name = models.CharField(max_length=40, unique=True, help_text="Character name")
     the_class = models.ForeignKey('AllClass', on_delete=models.RESTRICT, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT, null=True, blank=True)
 
     def __str__(self):
         return self.name

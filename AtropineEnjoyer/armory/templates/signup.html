@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 85vh;
+            margin: 0;
+            background-image: url('../../media/backgounds/login_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 5px;
+            text-align: left;
+            box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <p style="font-size: 5em; text-align: center;"><strong>LOAPedia</strong></p>
+        <h1 style="text-align: center;">Signup</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="text-align: center;">
+            <button type="submit">Signup</button>
+            <a href="{% url 'login' %}">Already have an account?</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

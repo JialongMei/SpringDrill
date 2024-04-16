@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog.apps.CatalogConfig',
     'rest_framework',
+    'armory',
 ]
 
 MIDDLEWARE = [
