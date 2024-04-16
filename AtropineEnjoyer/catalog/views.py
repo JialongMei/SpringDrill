@@ -1,11 +1,18 @@
 from django.shortcuts import render
-from .models import CombatEngraving, ClassEngraving, AllClass, Archetype
+from .models import CombatEngraving, ClassEngraving, AllClass, Archetype, Character
 from django.views import generic
 from django.shortcuts import HttpResponse, Http404
 from .recolor import recolor
+from .serializers import CharacterSerializer
+from django.http import JsonResponse
 
 # def index(request):
 #     return render(request, 'index.html')
+
+def character_list(request):
+    characters = Character.objects.all()
+    serializer = CharacterSerializer(characters, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 
 class ArchetypeListView(generic.ListView):
