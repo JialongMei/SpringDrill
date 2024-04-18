@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout 
+from django.contrib.auth import authenticate, login, logout
 from .forms import SignupForm, LoginForm
+from catalog.models import Character
 
 
 def user_login(request):
@@ -32,3 +33,11 @@ def user_signup(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+# replaced by IndexArchetypeCharacterList
+# def user_character_list(request):
+#     if request.user.is_authenticated:
+#         character_list = Character.objects.filter(owner=request.user.id)
+#         return render(request, 'character_list.html', context={'character_list': character_list})
+#     else:
+#         return 0

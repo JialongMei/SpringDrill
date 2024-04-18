@@ -2,9 +2,11 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+# from armory.views import user_character_list
 
 urlpatterns = [
-    path('', views.ArchetypeListView.as_view(), name='archetype'),
+    path('', views.IndexArchetypeCharacterList.as_view(), name='archetype'),
+    # path('character/', user_character_list, name='user-character-list'), replaced by IndexArchetypeCharacterList
     path('archetype/<int:pk>', views.ArchetypeDetailView.as_view(), name='archetype-detail'),
     path('class/', views.AllClassListView.as_view(), name='class'),
     path('class/<int:pk>', views.AllClassDetailView.as_view(), name='class-detail'),

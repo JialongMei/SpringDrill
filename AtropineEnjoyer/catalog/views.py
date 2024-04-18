@@ -4,20 +4,34 @@ from django.views import generic
 from .serializers import CharacterSerializer
 from django.http import JsonResponse
 
-# def index(request):
-#     return render(request, 'index.html')
+class IndexArchetypeCharacterList(generic.ListView):
+    model = Archetype
+    paginate_by = 6
+    context_object_name = 'archetype_list'
+    template_name = 'index.html'
+
+    def get(self, request, *args, **kwargs):
+        return self.user_character_list(request, *args, **kwargs)
+
+    def user_character_list(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            character_list = Character.objects.filter(owner=request.user.id)
+            return render(request, 'index.html', context={'character_list': character_list})
+        else:
+            return 0
+
 
 def character_list(request):
     characters = Character.objects.all()
     serializer = CharacterSerializer(characters, many=True)
     return JsonResponse(serializer.data, safe=False)
 
-
-class ArchetypeListView(generic.ListView):
-    model = Archetype
-    paginate_by = 6
-    context_object_name = 'archetype_list'
-    template_name = 'index.html'
+#replaced by IndexArchetypeCharacterList
+# class ArchetypeListView(generic.ListView):
+#     model = Archetype
+#     paginate_by = 6
+#     context_object_name = 'archetype_list'
+#     template_name = 'index.html'
 
 
 class ArchetypeDetailView(generic.DetailView):
