@@ -38,6 +38,11 @@
                 <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
               {% endif %}
               {% block roster %}
+                <br>
+                <li>User Roster:</li>
+              {% for character in character_list %}
+                  <li>{{character.name}} {{character.ilv}}</li>
+              {% endfor %}
               {% endblock %}
             </ul>
           {% endblock %}
