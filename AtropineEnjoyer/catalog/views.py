@@ -1,11 +1,15 @@
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
 from .models import CombatEngraving, ClassEngraving, AllClass, Archetype, Character
 from django.views import generic
 from .serializers import CharacterSerializer, CombatEngravingSerializer
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from rest_framework import permissions, viewsets, status
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 
 
 class IndexArchetypeCharacterList(generic.ListView):
@@ -37,47 +41,53 @@ class IndexArchetypeCharacterList(generic.ListView):
     #         return 0
 
 
-@api_view(['GET', 'POST'])
-def character_list(request):
-    if request.method == 'GET':
+class CharacterList(APIView):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CharacterList, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, format=None):
         character = Character.objects.filter(owner=request.user.id)
         serializer = CharacterSerializer(character, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
 
-    elif request.method == 'POST':
-        # data = JSONParser().parse(request)
-        serializer = CharacterSerializer(data=request.data)
+    def post(self, request, format=None):
+        serializer = CharacterSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def character_detail(request, pk):
-    """
-    Retrieve, update or delete a code snippet.
-    """
-    try:
-        character = Character.objects.get(pk=pk)
-    except Character.DoesNotExist:
-        return HttpResponse(status=404)
+class CharacterDetail(APIView):
 
-    if request.method == 'GET':
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CharacterDetail, self).dispatch(request, *args, **kwargs)
+
+    def get_object(self, pk):
+        try:
+            return Character.objects.get(pk=pk)
+        except Character.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        character = self.get_object(pk)
         serializer = CharacterSerializer(character)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = CharacterSerializer(character, data=data)
+    def put(self, request, pk, format=None):
+        character = self.get_object(pk)
+        serializer = CharacterSerializer(character, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, pk, format=None):
+        character = self.get_object(pk)
         character.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # replaced by IndexArchetypeCharacterList

@@ -1,0 +1,21 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <form action="character/" method="post">
+        {% csrf_token %}
+        <label for="id_name">Name:</label>
+        <input type="text" id="id_name" name="name">
+        <br>
+        <label for="id_the_class">Choose a Class:</label>
+        <select name="the_class" id="id_the_class">
+            {% for class_instance in all_classes %}
+                <option value="{{ class_instance.pk }}">{{ class_instance.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="id_ilv">Item Level:</label>
+        <input type="number" id="id_ilv" name="ilv">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

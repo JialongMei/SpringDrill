@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import SignupForm, LoginForm
-from catalog.models import Character
+from catalog.models import Character, AllClass
 
 
 def user_login(request):
@@ -38,6 +38,11 @@ def user_logout(request):
 # def user_character_list(request):
 #     if request.user.is_authenticated:
 #         character_list = Character.objects.filter(owner=request.user.id)
-#         return render(request, 'character_list.html', context={'character_list': character_list})
+#         return render(request, 'add_character.html', context={'character_list': character_list})
 #     else:
 #         return 0
+
+
+def add_character(request):
+    all_classes = AllClass.objects.all()
+    return render(request, 'add_character.html', {'all_classes': all_classes})
