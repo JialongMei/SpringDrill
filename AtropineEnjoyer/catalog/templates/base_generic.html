@@ -42,7 +42,7 @@
                 <br>
                 <li>User Roster:</li>
               {% for character in character_list %}
-                  <li>{{character.name}} {{character.ilv}}</li>
+                  <li ><a href="{% url 'character-detail' character.pk %}">{{character.name}}</a> {{character.ilv}}</li>
               {% endfor %}
               <br>
                 <a href="{% url 'add-character' %}">

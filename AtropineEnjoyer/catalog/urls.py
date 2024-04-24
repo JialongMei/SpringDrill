@@ -11,8 +11,8 @@ router.register(r'combat-engravings', views.CombatEngravingViewSet)
 
 
 urlpatterns = [
-    path('', views.IndexArchetypeCharacterList.as_view(), name='archetype'),
-    # path('character/', user_character_list, name='user-character-list'), replaced by IndexArchetypeCharacterList
+    path('', views.IndexArchetypeList.as_view(), name='archetype'),
+    # path('character/', user_character_list, name='user-character-list'), replaced by IndexArchetypeList
     path('archetype/<int:pk>', views.ArchetypeDetailView.as_view(), name='archetype-detail'),
     path('class/', views.AllClassListView.as_view(), name='class'),
     path('class/<int:pk>', views.AllClassDetailView.as_view(), name='class-detail'),

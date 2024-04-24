@@ -22,11 +22,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('catalog/', include('catalog.urls')),
     path('armory/', include('armory.urls')),
     path('', RedirectView.as_view(url='catalog/', permanent=True)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # path('', RedirectView.as_views(url='armory/', permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

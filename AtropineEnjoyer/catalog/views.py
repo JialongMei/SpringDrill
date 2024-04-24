@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from .models import CombatEngraving, ClassEngraving, AllClass, Archetype, Character
 from django.views import generic
@@ -12,39 +13,18 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 
 
-class IndexArchetypeCharacterList(generic.ListView):
+class IndexArchetypeList(generic.ListView):
     model = Archetype
     paginate_by = 6
     context_object_name = 'archetype_list'
     template_name = 'index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        if self.request.user.is_authenticated:
-            character_list = Character.objects.filter(owner=self.request.user.id)
-        else:
-            character_list = []
-
-        context['character_list'] = character_list
-
-        return context
-
-    # def get(self, request, *args, **kwargs):
-    #     return self.user_character_list(request, *args, **kwargs)
-    #
-    # def user_character_list(self, request, *args, **kwargs):
-    #     if request.user.is_authenticated:
-    #         character_list = Character.objects.filter(owner=request.user.id)
-    #         return render(request, 'index.html', context={'character_list': character_list})
-    #     else:
-    #         return 0
 
 
 class CharacterList(APIView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super(CharacterList, self).dispatch(request, *args, **kwargs)
+
 
     def get(self, request, format=None):
         character = Character.objects.filter(owner=request.user.id)
@@ -60,6 +40,7 @@ class CharacterList(APIView):
 
 
 class CharacterDetail(APIView):
+    model = Character
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -74,7 +55,7 @@ class CharacterDetail(APIView):
     def get(self, request, pk, format=None):
         character = self.get_object(pk)
         serializer = CharacterSerializer(character)
-        return Response(serializer.data)
+        return Response(serializer.data,template_name='catalog/character_detail.html')
 
     def put(self, request, pk, format=None):
         character = self.get_object(pk)
@@ -90,7 +71,7 @@ class CharacterDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# replaced by IndexArchetypeCharacterList
+# replaced by IndexArchetypeList
 # class ArchetypeListView(generic.ListView):
 #     model = Archetype
 #     paginate_by = 6
@@ -101,39 +82,12 @@ class CharacterDetail(APIView):
 class ArchetypeDetailView(generic.DetailView):
     model = Archetype
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        archetype = context['object']
-
-        if self.request.user.is_authenticated:
-            character_list = Character.objects.filter(owner=self.request.user.id)
-        else:
-            character_list = []
-
-        context['character_list'] = character_list
-        context['archetype'] = archetype
-
-        return context
-
 
 class AllClassListView(generic.ListView):
     model = AllClass
     paginate_by = 10
     context_object_name = 'class_list'
     template_name = 'catalog/class_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        if self.request.user.is_authenticated:
-            character_list = Character.objects.filter(owner=self.request.user.id)
-        else:
-            character_list = []
-
-        context['character_list'] = character_list
-
-        return context
 
 
 class AllClassDetailView(generic.DetailView):
@@ -143,13 +97,6 @@ class AllClassDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
 
         allclass = context['object']
-
-        if self.request.user.is_authenticated:
-            character_list = Character.objects.filter(owner=self.request.user.id)
-        else:
-            character_list = []
-
-        context['character_list'] = character_list
         context['class'] = allclass
 
         return context
@@ -160,18 +107,6 @@ class CombatEngravingListView(generic.ListView):
     paginate_by = 10
     context_object_name = 'combat_engraving_list'
     template_name = 'catalog/combat_engraving.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        if self.request.user.is_authenticated:
-            character_list = Character.objects.filter(owner=self.request.user.id)
-        else:
-            character_list = []
-
-        context['character_list'] = character_list
-
-        return context
 
 
 class CombatEngravingDetailView(generic.DetailView):

@@ -16,7 +16,7 @@ class Character(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('user-character-list', args=[str(self.id)])
+        return reverse('character-detail', args=[str(self.id)])
 
 
 class Archetype(models.Model):

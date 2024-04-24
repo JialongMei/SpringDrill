@@ -34,7 +34,7 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
-# replaced by IndexArchetypeCharacterList
+# replaced by IndexArchetypeList
 # def user_character_list(request):
 #     if request.user.is_authenticated:
 #         character_list = Character.objects.filter(owner=request.user.id)
