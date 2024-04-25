@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import CombatEngraving, ClassEngraving, AllClass, Archetype, Character
 from django.views import generic
@@ -21,6 +21,7 @@ class IndexArchetypeList(generic.ListView):
 
 
 class CharacterList(APIView):
+    permission_classes = [IsAuthenticated]
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super(CharacterList, self).dispatch(request, *args, **kwargs)
@@ -40,6 +41,7 @@ class CharacterList(APIView):
 
 
 class CharacterDetail(APIView):
+    permission_classes = [IsAuthenticated]
     model = Character
 
     @method_decorator(csrf_exempt)
