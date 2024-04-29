@@ -6,7 +6,8 @@ from catalog.models import Character, AllClass
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import AccessToken
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
+JWT_authenticator = JWTAuthentication()
 
 def user_login(request):
     if request.method == 'POST':
@@ -16,11 +17,13 @@ def user_login(request):
             try:
                 print(111)
                 # Validate the access token
-                access_token_obj = AccessToken(access_token)
+                access_token_obj = JWT_authenticator.authenticate(request)
                 print(222)
-                user = access_token_obj.payload.get('user_id')
-                print(user)
-                print(111)
+                if access_token_obj is not None:
+                    # unpacking
+                    user, token = access_token_obj
+                    print(user)
+                    print(token.payload)
                 if user is not None:
                     # If the access token is valid, log in the user
                     login(request, user)
